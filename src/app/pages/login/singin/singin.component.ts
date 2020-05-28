@@ -59,7 +59,7 @@ export class SinginComponent implements OnInit {
   }
 
   loginWithGG() {
-    this.auth.googleSignin().then(()=>{
+    this.auth.loginWithGG().then(()=>{
       this.router.navigate(['Home']);
     });
  }

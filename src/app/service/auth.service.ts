@@ -4,51 +4,81 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { User} from '../model/user.model'
 import { auth } from 'firebase';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user$: Observable<User>;
+  uid:string = "";
+  user:User = {
+    email : '',
+    name: '',
+    photourl: '',
+  }
   constructor(
-    private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
-    private router: Router
-  ) {
-    this.user$ = this.afAuth.authState.pipe(
-      switchMap(user => {
-          // Logged in
-        if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-        } else {
-          // Logged out
-          return of(null);
+    public db: AngularFirestore,
+    public afAuth: AngularFireAuth,
+    public snackBar: MatSnackBar,
+  ) {}
+
+  async loginWithGG() {
+    const provider = await new auth.GoogleAuthProvider();
+    await this.afAuth.signInWithPopup(provider).then((u) => {
+      this.login();
+      this.snackBar.open('Success!', 'OK', {duration: 2000});
+      console.log(u.user);
+      this.uid=u.user.uid;
+        this.user.email=u.user.email;
+        this.user.name=u.user.displayName;
+        this.user.photourl=u.user.photoURL;
+        if(!this.checkuser(u.user.uid))
+        {
+          this.addNewUser();
         }
-      })
-    )
+    }).catch((err) =>{
+      this.snackBar.open(err,'OK', {duration: 2000})
+    });
   }
 
-  async googleSignin() {
-    const provider = new auth.GoogleAuthProvider();
-    const credential = await this.afAuth.signInWithPopup(provider);
-    return this.updateUserData(credential.user);
+  checkuser(uid:string): boolean{
+    this.db.collection('users').doc(uid).get().subscribe((data)=>{
+      if(data.exists)
+      {
+        return true;
+      }
+      else return false;
+    });
+    return false;
+  }
+  addNewUser()
+  {
+    this.db.collection("users").doc(this.uid).set(this.user);
+
   }
 
-  private updateUserData(user) {
 
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+  fetch(){
+    //this.db.collection("users").doc(this.uid).get()
+    this.db.collection("users").doc(this.uid).get()
+  }
 
-    const data = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL
+  isLoggedin = false;
+
+    login() {
+        this.isLoggedin = true;
     }
 
-    return userRef.set(data, { merge: true })
+    logout() {
+        this.isLoggedin = false;
+    }
 
-  }
+
+}
+interface User{
+  email:string,
+  name:string,
+  photourl:string,
 }

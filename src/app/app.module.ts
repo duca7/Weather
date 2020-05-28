@@ -11,6 +11,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
+import { ComponentsModule } from './components/components.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -24,6 +25,7 @@ import { environment } from 'src/environments/environment';
     AngularFireAuthModule,
     HeadModule,
     LoginModule,
+    ComponentsModule,
 
   ],
   providers: [],

@@ -1,3 +1,4 @@
+import { WeatherService } from './service/weather.service';
 import { LoginModule } from './pages/login/login.module';
 import { HeadModule } from './pages/head/head.module';
 
@@ -30,9 +31,12 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
     HeadModule,
     LoginModule,
     ComponentsModule,
+    HttpClientModule
 
   ],
-  providers: [ HttpClientModule],
+  providers: [
+    WeatherService
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -12,6 +12,9 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 import { ComponentsModule } from './components/components.module';
+import { StoreModule } from '@ngrx/store';
+import { reduce } from 'rxjs/operators';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent
@@ -23,12 +26,13 @@ import { ComponentsModule } from './components/components.module';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    StoreModule,
     HeadModule,
     LoginModule,
     ComponentsModule,
 
   ],
-  providers: [],
+  providers: [ HttpClientModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

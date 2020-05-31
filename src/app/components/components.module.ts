@@ -5,18 +5,21 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
+import { UVComponent } from './uv/uv.component';
+
 
 
 
 @NgModule({
-  declarations: [NavBarComponent],
+  declarations: [NavBarComponent, UVComponent, ],
   imports: [
     CommonModule,
     MatToolbarModule,
     MatMenuModule
   ],
   exports:[
-    NavBarComponent
+    NavBarComponent,
+
   ]
 })
 export class ComponentsModule { }

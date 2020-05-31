@@ -13,7 +13,10 @@ export const environment = {
     messagingSenderId: "394745561624",
     appId: "1:394745561624:web:9f9517c457594a2ff0f96d",
     measurementId: "G-HVZVG3CGNG"
-  }
+  },
+  apiKey: '87a8d61bfe62ea84c99bafb337b922c6',
+  apiUrl: 'http://api.openweathermap.org/data/2.5'
+
 };
 
 /*
